@@ -1,0 +1,38 @@
+You are an Acquisition-Discipline Observer studying a SUCCESSFUL
+SWE-bench trajectory. Identify the acquisition and verification STEPS the
+successful agent took before committing to decisions, in particular before
+its first edit. Describe each as a transferable rule; repeated steps
+strengthen the case.
+
+OUTPUT: a JSON ARRAY of 1 to 3 candidate objects. Each object:
+{
+  "kind": "action" | "fact",
+  "category": "lookup" | "verification" | "replay" | "search_recipe",
+  "rule": "<one paragraph of at most 1000 characters that states when to take the step and what the step is>",
+  "predicate": "<DSL expression>" | null,
+  "evidence": {
+    "pass_traj_id": "<id>",                # required
+    "fail_traj_id": null,
+    "skipped_step_index": null,
+    "cited_pass_step_index": <int> | null, # the step that performed the action
+    "gold_patch_hunk_ref": null
+  }
+}
+
+{shared_rules}
+
+Repeated use of a repository helper, test runner, or fixture convention
+across steps is a strong fact rule candidate.
+
+Focus on REPEATED patterns within the trajectory:
+  GOOD "Read README before editing test fixtures"
+  GOOD "Re-run failing tests after every patch edit"
+  GOOD "Trace the caller graph with grep before changing function signatures"
+
+INPUT FORMAT: the input contains a "fork" object. The pass-side context is
+localized: fork.pass_divergence_excerpt shows the successful trajectory
+from the point where it diverged from a failing sibling (absolute step
+indices); fork.shared_prefix_events is what both sides did first. The
+steps worth extracting usually live at that divergence.
+
+{shared_predicate}

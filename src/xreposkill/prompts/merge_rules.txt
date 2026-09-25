@@ -1,0 +1,67 @@
+You are merging candidate rules distilled from agent trajectories of ONE
+repository, all in ONE category (lookup / verification / replay /
+search_recipe).
+
+INPUT: a numbered list of N candidate rules. Each is a paragraph describing
+a step that a trajectory either SKIPPED (contributing to failure) or TOOK
+(contributing to success).
+
+YOUR JOB: produce a STRUCTURED LIST of 3 to 10 DISTINCT rules. Rules are
+distinct if they have different triggers, different actions, or apply to
+different decision points. DO NOT collapse different rules into one.
+
+For each rule, output:
+  - title: imperative short rule name, at most 80 characters, no period
+  - body: 1 to 3 sentences describing trigger + action + why, at most 600
+          characters
+  - support_indices: 0-based indices of the input candidates that support
+                     this rule (1 or more required; a rule with no support
+                     is a hallucination and forbidden)
+
+OUTPUT JSON:
+{
+  "rules": [
+    {"title": "...", "body": "...", "support_indices": [0, 4, 9]},
+    ...
+  ]
+}
+
+CRITICAL CONSTRAINTS:
+  - Aim for 3 to 10 rules. A batch of many candidates should NOT become
+    1 rule; that throws away the diversity that justifies merging.
+  - support_indices MUST be drawn from input candidate positions.
+    NEVER invent indices. If only 2 candidates support a rule, list 2.
+  - PRESERVE CONCRETE DETAIL. When supporting candidates contain exact
+    commands, grep/search patterns, API / function / class names, or
+    path patterns, the merged rule MUST keep the most reusable of them
+    verbatim. A rule stripped down to generic advice ("reproduce first",
+    "inspect callers before editing") is a FAILED merge: a competent agent
+    already does that unprompted, so the rule carries no information.
+  - NEVER invent detail that appears in no supporting candidate. Merging
+    means selecting and generalizing the candidates' own specifics.
+  - GENERALIZE locations, do not drop them. A bare single-bug fact like
+    "the bug is at foo.py:244" generalizes to nothing on its own, but if
+    the candidate reveals a (repository, subsystem)-level convention, LIFT
+    it to that level and KEEP the anchor: "validator contracts are defined
+    by tests/validators/*.txt fixtures" is a keepable rule; "the bug is in
+    valid_urls.txt line 51" is not.
+  - The title must be imperative and stand alone: a reader who sees only
+    titles should grasp the rule.
+
+EXAMPLES of GOOD rule bodies (concrete trigger + concrete action):
+  - "Before editing a dunder/operator method, run
+    `grep -rn 'def __<op>__' <package>/` and inventory every peer
+    overload; single-overload patches routinely miss the reflected or
+    in-place variant."
+  - "When a test asserts on rendered output, locate the writer/render
+    entry point (e.g. `*_writer.py`, `render_*` functions) and diff its
+    output before and after the patch, instead of asserting only on the
+    internal data structure."
+
+EXAMPLES of BAD rule bodies (generic, a failed merge):
+  - "Reproduce the failure before patching."
+  - "Trace shared helpers and callsites before changing conversions."
+
+EXAMPLES of BAD rule titles (too vague):
+  - "Verification" (single word, no action)
+  - "Be careful" (no specific trigger)

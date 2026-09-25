@@ -1,0 +1,29 @@
+ACTION RULES (kind "action") prescribe a step: WHAT action to take and WHEN
+to take it, phrased so that the rule applies beyond this issue and this
+repository.
+FORBIDDEN in an action rule:
+  - Stating concrete facts about this bug ("the bug is in line 244 of
+    separable.py")
+  - Naming specific functions or classes, except in the search_recipe
+    category where the named pattern is the recipe
+  - Repository-specific knowledge
+
+FACT RULES (kind "fact") state repository knowledge that a same-repo
+developer would have had. Concrete anchors are REQUIRED here: every fact
+rule MUST name at least one real file path or symbol, and MUST generalize
+beyond the single bug: state the convention at the (repository, subsystem)
+level, not the bug's location.
+  GOOD "django: validator contracts are DEFINED by the fixture files
+       tests/validators/valid_urls.txt / invalid_urls.txt; fixes routinely
+       update the fixture alongside django/core/validators.py."
+  GOOD "django: run the test suite with `python tests/runtests.py <label>`,
+       not pytest, because pytest cannot collect django's test modules."
+  GOOD "matplotlib: at serialization/output boundaries, strip device-pixel
+       scaling via `getattr(fig, '_original_dpi', fig.dpi)` (see
+       FigureCanvasBase.print_figure); persisting the scaled dpi is a bug."
+  BAD  "the bug is at foo.py:244" (a single-bug location generalizes to
+       nothing)
+
+CATEGORIES: lookup (read or inspect something before deciding),
+verification (check a result or assumption), replay (reproduce or re-run),
+search_recipe (a concrete search command or pattern).

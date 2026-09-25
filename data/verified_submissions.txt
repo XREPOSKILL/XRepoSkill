@@ -1,0 +1,12 @@
+20260217_mini-v2.0.0_claude-4-5-haiku-high
+20260217_mini-v2.0.0_claude-4-5-opus-high
+20260217_mini-v2.0.0_claude-4-5-sonnet-high
+20260217_mini-v2.0.0_claude-4-6-opus
+20260217_mini-v2.0.0_deepseek-3-2-high
+20260217_mini-v2.0.0_gemini-3-flash-high
+20260217_mini-v2.0.0_glm-5-high
+20260217_mini-v2.0.0_gpt-5-2-high
+20260217_mini-v2.0.0_gpt-5-mini
+20260217_mini-v2.0.0_kimi-k2-5-high
+20260217_mini-v2.0.0_minimax-2-5-high
+20260226_mini-v2.0.0_gemini-3-pro-high

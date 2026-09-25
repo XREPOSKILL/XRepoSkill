@@ -1,0 +1,26 @@
+{
+  "openai/gpt-5.6-luna": {
+    "input_cost_per_token": 2e-07,
+    "output_cost_per_token": 1.2e-06,
+    "cache_read_input_token_cost": 2e-08,
+    "max_input_tokens": 400000,
+    "max_output_tokens": 128000,
+    "max_tokens": 128000,
+    "litellm_provider": "openai",
+    "mode": "chat",
+    "supports_reasoning": true,
+    "supports_prompt_caching": true
+  },
+  "openai/mimo-v2.5-pro": {
+    "input_cost_per_token": 1e-06,
+    "output_cost_per_token": 3e-06,
+    "cache_read_input_token_cost": 2e-07,
+    "max_input_tokens": 1048576,
+    "max_output_tokens": 16384,
+    "max_tokens": 16384,
+    "litellm_provider": "openai",
+    "mode": "chat",
+    "supports_reasoning": true,
+    "supports_prompt_caching": true
+  }
+}

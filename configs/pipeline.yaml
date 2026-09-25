@@ -1,0 +1,42 @@
+# XRepoSkill pipeline configuration. Every value here is the default used
+# for the paper's skill (the v10 corpus); command-line flags override it.
+
+models:
+  skill_learning: deepseek/deepseek-v4-pro    # every LLM call of Stage 1 and Stage 2
+  backbone: deepseek/deepseek-v4-flash        # Stage 3 selection calls and the agent (override per run)
+
+pair:
+  K: 4                       # pairs kept per issue, ranked by resolution-rate gap
+
+discover:
+  workers: 16
+  retry_on_guard_reject: 1   # one re-prompt with the guard reason
+  rule_max_chars: 1000
+  occurrence_bounds: [0.10, 0.90]   # predicate must be true on 10..90% of the pool
+
+merge:
+  batch_size: 32             # candidates per merge call
+
+judge:
+  required_dims: [is_discipline, not_repo_conflicting]   # coarse screen only
+  workers: 16
+
+audit:
+  ngram: 6
+
+generalize:
+  knn: 15                    # text neighbours offered to the assignment call
+  min_fires: 20              # predicate must be true on >= 20 and false on >= 20 trajectories
+  heterogeneity_alpha: 0.10  # Cochran's Q p-value below this marks HET
+  workers: 12
+  embedding_model: all-MiniLM-L6-v2
+
+retrieval:
+  top_n: 3
+  workers: 16
+  issue_max_chars: 6000
+
+rollout:
+  workers: 16
+  dataset: ScaleAI/SWE-bench_Pro
+  dockerhub_user: jefzda

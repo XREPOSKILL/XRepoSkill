@@ -1,0 +1,37 @@
+[project]
+name = "xreposkill"
+version = "1.0.0"
+description = "Distil transferable issue-resolution rules from cross-model agent trajectories and inject them into mini-SWE-agent."
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.7",
+  "litellm>=1.40",
+  "boto3>=1.34",
+  "requests>=2.31",
+  "pyyaml>=6.0",
+  "numpy>=1.26",
+  "scipy>=1.13",
+  "scikit-learn>=1.4",
+  "sentence-transformers>=3.0",
+  "datasets>=2.19",
+]
+
+[project.optional-dependencies]
+rollout = ["mini-swe-agent>=2.0"]
+dev = ["pytest>=8.0"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+xreposkill = ["prompts/*.txt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra -q"
+markers = ["slow: end-to-end smoke test with mocked LLM calls"]
